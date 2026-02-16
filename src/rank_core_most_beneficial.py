@@ -62,6 +62,7 @@ def main() -> None:
 
     tidy = df[core_cols].melt(var_name="course_header", value_name="rank_value")
     tidy["course"] = tidy["course_header"].map(extract_course_name)
+    tidy["course"] = tidy["course"].str.replace(r"\s*-\s*rank\s*$", "", regex=True, flags=re.IGNORECASE).str.strip()
     tidy["rank_value"] = pd.to_numeric(tidy["rank_value"], errors="coerce")
     tidy = tidy.dropna(subset=["rank_value"])
 
